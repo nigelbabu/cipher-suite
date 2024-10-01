@@ -1,18 +1,4 @@
-pub struct Config {
-    pub filename: String,
-    pub function: String,
-}
-
-impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
-        let filename = args[1].clone();
-        let function = args[2].clone().to_lowercase();
-        Ok(Config { filename, function })
-    }
-}
+use std::string::String;
 
 // Used to encrypt
 fn shift_right(input: u8, shift: u8, start: u8) -> u8 {
@@ -28,7 +14,7 @@ fn shift_left(input: u8, shift: u8, start: u8) -> u8 {
     result
 }
 
-pub fn encrypt(input: &str, key: &str) -> String {
+pub fn encrypt(input: &str, key: &str) -> Result<String, String> {
     let mut result: Vec<u8> = Vec::new();
     let key = key.as_bytes();
     let mut i = 0;
@@ -47,14 +33,13 @@ pub fn encrypt(input: &str, key: &str) -> String {
             l @ _ => l as u8,
         });
     }
-    let secret = match String::from_utf8(result) {
-        Ok(v) => v,
-        Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
-    };
-    secret
+    match String::from_utf8(result) {
+        Ok(v) => Ok(v),
+        Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e))
+    }
 }
 
-pub fn decrypt(input: &str, key: &str) -> String {
+pub fn decrypt(input: &str, key: &str) -> Result<String, String> {
     let mut result: Vec<u8> = Vec::new();
     let key = key.as_bytes();
     let mut i = 0;
@@ -73,11 +58,10 @@ pub fn decrypt(input: &str, key: &str) -> String {
             l @ _ => l as u8,
         });
     }
-    let secret = match String::from_utf8(result) {
-        Ok(v) => v,
-        Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
-    };
-    secret
+    match String::from_utf8(result) {
+        Ok(v) => Ok(v),
+        Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e))
+    }
 }
 
 #[cfg(test)]
