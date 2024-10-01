@@ -33,8 +33,8 @@ fn main() -> std::io::Result<()> {
     buf_reader.read_to_string(&mut contents)?;
     
     let result = match &args.command {
-        Some(Commands::Encrypt {}) => vigenere_cipher::encrypt(&contents, args.key.as_str()),
-        Some(Commands::Decrypt {}) => vigenere_cipher::decrypt(&contents, args.key.as_str()),
+        Some(Commands::Encrypt {}) => vigenere_cipher::vignere::encrypt(&contents, args.key.as_str()),
+        Some(Commands::Decrypt {}) => vigenere_cipher::vignere::decrypt(&contents, args.key.as_str()),
         None => Err(String::from("Command not provided: encrypt or decrypt")),
     };
     match result {
