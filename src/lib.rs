@@ -30,10 +30,20 @@ fn shift_left(input: u8, shift: u8, start: u8) -> u8 {
 
 pub fn encrypt(input: &str, key: &str) -> String {
     let mut result: Vec<u8> = Vec::new();
+    let key = key.as_bytes();
+    let mut i = 0;
     for letter in input.chars() {
         result.push(match letter {
-            l @ 'a'..='z' => shift_right(l as u8, 3, 'a' as u8),
-            l @ 'A'..='Z' => shift_right(l as u8, 3, 'A' as u8),
+            l @ 'a'..='z' => {
+                let res = shift_right(l as u8, (key[i % key.len()]) - 'a' as u8, 'a' as u8);
+                i += 1;
+                res
+            }
+            l @ 'A'..='Z' => {
+                let res = shift_right(l as u8, (key[i % key.len()]) - 'a' as u8, 'A' as u8);
+                i += 1;
+                res
+            }
             l @ _ => l as u8,
         });
     }
@@ -46,10 +56,20 @@ pub fn encrypt(input: &str, key: &str) -> String {
 
 pub fn decrypt(input: &str, key: &str) -> String {
     let mut result: Vec<u8> = Vec::new();
+    let key = key.as_bytes();
+    let mut i = 0;
     for letter in input.chars() {
         result.push(match letter {
-            l @ 'a'..='z' => shift_left(l as u8, 3, 'a' as u8),
-            l @ 'A'..='Z' => shift_left(l as u8, 3, 'A' as u8),
+            l @ 'a'..='z' => {
+                let res = shift_left(l as u8, (key[i % key.len()]) - 'a' as u8, 'a' as u8);
+                i += 1;
+                res
+            }
+            l @ 'A'..='Z' => {
+                let res = shift_left(l as u8, (key[i % key.len()]) - 'a' as u8, 'A' as u8);
+                i += 1;
+                res
+            }
             l @ _ => l as u8,
         });
     }
