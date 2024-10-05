@@ -35,7 +35,7 @@ pub mod vignere {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e))
+            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 
@@ -60,7 +60,7 @@ pub mod vignere {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e))
+            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 }
@@ -91,7 +91,7 @@ pub mod caesar {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e))
+            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 
@@ -106,7 +106,81 @@ pub mod caesar {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e))
+            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
+        }
+    }
+}
+
+pub mod hill {
+
+    pub fn encrypt(input: &str, key: &str) -> Result<String, String> {
+        let mut key_matrix = vec![vec![0; 2]; 2];
+        let mut chars = key.chars();
+        for i in 0..2 {
+            for j in 0..2 {
+                key_matrix[i][j] = match chars.next() {
+                    Some(x) => (x as u8) % ('a' as u8),
+                    None => 0,
+                }
+            }
+        }
+        println!("DEBUG: {:?}", key_matrix);
+        let mut input_matrix: Vec<Vec<u8>> = Vec::new();
+        let mut y = 0;
+
+        let mut item = vec![25; 2];
+        for (i, letter) in input.chars().enumerate() {
+            match letter {
+                l @ 'a'..='z' => {
+                    item[y] = (l as u8) % ('a' as u8);
+                    y += 1;
+                }
+                l @ 'A'..='Z' => {
+                    item[y] = (l as u8) % ('A' as u8);
+                    y += 1;
+                }
+                _ => (),
+            }
+            if y > 1 || (y != 0 && i == input.len() - 1) {
+                y = 0;
+                input_matrix.push(item.clone());
+                item = vec![25; 2];
+            }
+        }
+
+        let mut result: Vec<u8> = Vec::new();
+        for item in input_matrix {
+            for i in 0..2 {
+                let mut res: u16 = 0;
+                for j in 0..2 {
+                    res += (item[j] as u16) * (key_matrix[i][j] as u16);
+                }
+                result.push((res % 26) as u8);
+            }
+        }
+
+        println!("DEBUG: {:?}", result);
+
+        let mut output: Vec<u8> = Vec::new();
+        let mut i = 0;
+        for letter in input.chars() {
+            output.push(match letter {
+                'a'..='z' => {
+                    let r = result[i] + ('a' as u8);
+                    i += 1;
+                    r
+                }
+                'A'..='Z' => {
+                    let r = result[i] + ('A' as u8);
+                    i += 1;
+                    r
+                }
+                l @ _ => l as u8,
+            });
+        }
+        match String::from_utf8(output) {
+            Ok(v) => Ok(v),
+            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 }
@@ -155,5 +229,24 @@ mod tests {
         let result = caesar::decrypt("abcdefghijklmnopqrstuvwxyz", 3);
         assert_eq!(result.unwrap(), "xyzabcdefghijklmnopqrstuvw");
     }
+    #[test]
+    fn encrypt_simple_hill_test() {
+        let result = hill::encrypt("this is a test", "test");
+        assert_eq!(result.unwrap(), "zhqs qs y xsyt");
+    }
+    #[test]
+    fn decrypt_simple_hill_test() {
+        let result = hill::encrypt("zhqs qs y xsytL", "pqup");
+        assert_eq!(result.unwrap(), "this is a testZ");
+    }
+    #[test]
+    fn encrypt_hill_test() {
+        let result = hill::encrypt("abcdefghijklmnopqrstuvwxyz", "test");
+        assert_eq!(result.unwrap(), "etypslmhgdazuvorincjwfqbkx");
+    }
+    #[test]
+    fn decrypt_hill_test() {
+        let result = hill::encrypt("etypslmhgdazuvorincjwfqbkx", "pqup");
+        assert_eq!(result.unwrap(), "abcdefghijklmnopqrstuvwxyz");
+    }
 }
-
