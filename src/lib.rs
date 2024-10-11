@@ -124,7 +124,6 @@ pub mod hill {
                 }
             }
         }
-        println!("DEBUG: {:?}", key_matrix);
         let mut input_matrix: Vec<Vec<u8>> = Vec::new();
         let mut y = 0;
 
@@ -158,8 +157,6 @@ pub mod hill {
                 result.push((res % 26) as u8);
             }
         }
-
-        println!("DEBUG: {:?}", result);
 
         let mut output: Vec<u8> = Vec::new();
         let mut i = 0;
