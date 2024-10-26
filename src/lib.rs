@@ -21,12 +21,12 @@ pub mod vignere {
         for letter in input.chars() {
             result.push(match letter {
                 l @ 'a'..='z' => {
-                    let res = shift_right(l as u8, (key[i % key.len()]) - 'a' as u8, 'a' as u8);
+                    let res = shift_right(l as u8, (key[i % key.len()]) - b'a', b'a');
                     i += 1;
                     res
                 }
                 l @ 'A'..='Z' => {
-                    let res = shift_right(l as u8, (key[i % key.len()]) - 'a' as u8, 'A' as u8);
+                    let res = shift_right(l as u8, (key[i % key.len()]) - b'a', b'A');
                     i += 1;
                     res
                 }
@@ -46,12 +46,12 @@ pub mod vignere {
         for letter in input.chars() {
             result.push(match letter {
                 l @ 'a'..='z' => {
-                    let res = shift_left(l as u8, (key[i % key.len()]) - 'a' as u8, 'a' as u8);
+                    let res = shift_left(l as u8, (key[i % key.len()]) - b'a', b'a');
                     i += 1;
                     res
                 }
                 l @ 'A'..='Z' => {
-                    let res = shift_left(l as u8, (key[i % key.len()]) - 'a' as u8, 'A' as u8);
+                    let res = shift_left(l as u8, (key[i % key.len()]) - b'a', b'A');
                     i += 1;
                     res
                 }
@@ -84,8 +84,8 @@ pub mod caesar {
         let mut result: Vec<u8> = Vec::new();
         for letter in input.chars() {
             result.push(match letter {
-                l @ 'a'..='z' => shift_right(l as u8, shift, 'a' as u8),
-                l @ 'A'..='Z' => shift_right(l as u8, shift, 'A' as u8),
+                l @ 'a'..='z' => shift_right(l as u8, shift, b'a'),
+                l @ 'A'..='Z' => shift_right(l as u8, shift, b'A'),
                 l @ _ => l as u8,
             });
         }
@@ -99,8 +99,8 @@ pub mod caesar {
         let mut result: Vec<u8> = Vec::new();
         for letter in input.chars() {
             result.push(match letter {
-                l @ 'a'..='z' => shift_left(l as u8, shift, 'a' as u8),
-                l @ 'A'..='Z' => shift_left(l as u8, shift, 'A' as u8),
+                l @ 'a'..='z' => shift_left(l as u8, shift, b'a'),
+                l @ 'A'..='Z' => shift_left(l as u8, shift, b'A'),
                 l @ _ => l as u8,
             });
         }
@@ -119,7 +119,7 @@ pub mod hill {
         for i in 0..2 {
             for j in 0..2 {
                 key_matrix[i][j] = match chars.next() {
-                    Some(x) => (x as u8) % ('a' as u8),
+                    Some(x) => (x as u8) % (b'a'),
                     None => 0,
                 }
             }
@@ -131,11 +131,11 @@ pub mod hill {
         for (i, letter) in input.chars().enumerate() {
             match letter {
                 l @ 'a'..='z' => {
-                    item[y] = (l as u8) % ('a' as u8);
+                    item[y] = (l as u8) % (b'a');
                     y += 1;
                 }
                 l @ 'A'..='Z' => {
-                    item[y] = (l as u8) % ('A' as u8);
+                    item[y] = (l as u8) % (b'A');
                     y += 1;
                 }
                 _ => (),
@@ -163,12 +163,12 @@ pub mod hill {
         for letter in input.chars() {
             output.push(match letter {
                 'a'..='z' => {
-                    let r = result[i] + ('a' as u8);
+                    let r = result[i] + (b'a');
                     i += 1;
                     r
                 }
                 'A'..='Z' => {
-                    let r = result[i] + ('A' as u8);
+                    let r = result[i] + (b'A');
                     i += 1;
                     r
                 }
