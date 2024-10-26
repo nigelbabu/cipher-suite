@@ -117,8 +117,8 @@ pub mod hill {
         let mut key_matrix = vec![vec![0; 2]; 2];
         let mut chars = key.chars();
         for i in key_matrix.iter_mut().take(2) {
-            for j in 0..2 {
-                i[j] = match chars.next() {
+            for j in i.iter_mut().take(2) {
+                *j = match chars.next() {
                     Some(x) => (x as u8) % (b'a'),
                     None => 0,
                 }
