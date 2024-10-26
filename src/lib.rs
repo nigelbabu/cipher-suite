@@ -35,7 +35,7 @@ pub mod vignere {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
+            Err(e) => Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 
@@ -60,7 +60,7 @@ pub mod vignere {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
+            Err(e) => Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 }
@@ -91,7 +91,7 @@ pub mod caesar {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
+            Err(e) => Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 
@@ -106,7 +106,7 @@ pub mod caesar {
         }
         match String::from_utf8(result) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
+            Err(e) => Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 }
@@ -177,7 +177,7 @@ pub mod hill {
         }
         match String::from_utf8(output) {
             Ok(v) => Ok(v),
-            Err(e) => return Err(format!("Invalid UTF-8 sequence: {}", e)),
+            Err(e) => Err(format!("Invalid UTF-8 sequence: {}", e)),
         }
     }
 }
