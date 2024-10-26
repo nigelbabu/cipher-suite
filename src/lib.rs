@@ -116,9 +116,9 @@ pub mod hill {
     pub fn encrypt(input: &str, key: &str) -> Result<String, String> {
         let mut key_matrix = vec![vec![0; 2]; 2];
         let mut chars = key.chars();
-        for i in 0..2 {
+        for i in key_matrix.iter_mut().take(2) {
             for j in 0..2 {
-                key_matrix[i][j] = match chars.next() {
+                i[j] = match chars.next() {
                     Some(x) => (x as u8) % (b'a'),
                     None => 0,
                 }
@@ -149,10 +149,10 @@ pub mod hill {
 
         let mut result: Vec<u8> = Vec::new();
         for item in input_matrix {
-            for i in 0..2 {
+            for i in key_matrix.iter_mut().take(2) {
                 let mut res: u16 = 0;
                 for j in 0..2 {
-                    res += (item[j] as u16) * (key_matrix[i][j] as u16);
+                    res += (item[j] as u16) * (i[j] as u16);
                 }
                 result.push((res % 26) as u8);
             }
