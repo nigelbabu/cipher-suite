@@ -30,7 +30,7 @@ pub mod vignere {
                     i += 1;
                     res
                 }
-                l @ _ => l as u8,
+                l => l as u8,
             });
         }
         match String::from_utf8(result) {
@@ -55,7 +55,7 @@ pub mod vignere {
                     i += 1;
                     res
                 }
-                l @ _ => l as u8,
+                l => l as u8,
             });
         }
         match String::from_utf8(result) {
@@ -86,7 +86,7 @@ pub mod caesar {
             result.push(match letter {
                 l @ 'a'..='z' => shift_right(l as u8, shift, b'a'),
                 l @ 'A'..='Z' => shift_right(l as u8, shift, b'A'),
-                l @ _ => l as u8,
+                l => l as u8,
             });
         }
         match String::from_utf8(result) {
@@ -101,7 +101,7 @@ pub mod caesar {
             result.push(match letter {
                 l @ 'a'..='z' => shift_left(l as u8, shift, b'a'),
                 l @ 'A'..='Z' => shift_left(l as u8, shift, b'A'),
-                l @ _ => l as u8,
+                l => l as u8,
             });
         }
         match String::from_utf8(result) {
@@ -172,7 +172,7 @@ pub mod hill {
                     i += 1;
                     r
                 }
-                l @ _ => l as u8,
+                l => l as u8,
             });
         }
         match String::from_utf8(output) {
